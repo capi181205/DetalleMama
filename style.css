@@ -1,57 +1,463 @@
+/* ========== VARIABLES ========== */
 :root {
-    --bg-color: #fdfafb;
+    --rosa-suave: #fce4ec;
+    --rosa-medio: #f48fb1;
+    --rosa-fuerte: #d63384;
+    --rosa-oscuro: #ad1457;
+    --morado: #9c27b0;
+    --crema: #fff8f0;
+    --dorado: #f9a825;
+    --texto-oscuro: #3d1a24;
     --spotify-black: #121212;
     --spotify-green: #1DB954;
-    --text-pink: #d63384;
 }
+
+/* ========== RESET Y BASE ========== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    margin: 0; background-color: var(--bg-color);
-    font-family: 'Quicksand', sans-serif;
-    height: 100vh; overflow: hidden;
+    font-family: 'Lato', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    cursor: none; /* ocultamos el cursor normal */
+    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #fce4ec 100%);
 }
 
+/* ========== CURSOR PERSONALIZADO ========== */
+.cursor-heart {
+    position: fixed;
+    top: 0; left: 0;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    filter: drop-shadow(0 0 4px rgba(214,51,132,0.5));
+}
+
+/* ========== PANTALLAS ========== */
 .screen {
-    position: absolute; width: 100%; height: 100%;
-    display: none; flex-direction: column;
-    justify-content: center; align-items: center;
+    position: absolute;
+    width: 100%; height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 
-.active { display: flex; }
+.screen.active {
+    display: flex;
+    opacity: 1;
+}
 
-#contador-container { margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; }
-.contador-titulo { font-size: 1rem; color: #777; margin: 0; }
-#reloj { font-size: 1.2rem; font-weight: bold; color: #333; margin-top: 5px; }
+.screen.fade-in {
+    animation: fadeInScreen 0.8s ease forwards;
+}
 
-.image-box { opacity: 0; transition: transform 2s ease, opacity 2s ease; }
+@keyframes fadeInScreen {
+    from { opacity: 0; transform: scale(0.98); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Overlay decorativo de fondo en cada pantalla */
+.screen-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(252,228,236,0.8) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(243,229,245,0.8) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.final-overlay {
+    background:
+        radial-gradient(ellipse at 50% 30%, rgba(252,228,236,0.9) 0%, transparent 70%),
+        radial-gradient(ellipse at 50% 80%, rgba(173,20,87,0.1) 0%, transparent 60%);
+}
+
+/* ========== PANTALLA 1 ========== */
+.p1-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    position: relative;
+    z-index: 1;
+}
+
+.saludo-top {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--rosa-oscuro);
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    animation: fadeDown 1s ease;
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.static-flower {
+    width: 190px;
+    cursor: none;
+    animation: pulse 2.2s infinite, glow 3s infinite alternate;
+    filter: drop-shadow(0 8px 24px rgba(214,51,132,0.35));
+    transition: transform 0.2s;
+}
+
+.static-flower:hover {
+    transform: scale(1.12) rotate(5deg);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.07); }
+}
+
+@keyframes glow {
+    from { filter: drop-shadow(0 8px 20px rgba(214,51,132,0.3)); }
+    to   { filter: drop-shadow(0 8px 32px rgba(214,51,132,0.7)); }
+}
+
+.instruccion {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    color: var(--rosa-oscuro);
+    animation: fadeDown 1.4s ease;
+}
+
+/* ========== PÉTALOS ========== */
+.petals-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.petal {
+    position: absolute;
+    top: -40px;
+    font-size: 22px;
+    animation: caerPetalo linear infinite;
+    opacity: 0.75;
+}
+
+@keyframes caerPetalo {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.8; }
+    50%  { transform: translateY(50vh) rotate(180deg) translateX(30px); }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+}
+
+/* ========== PANTALLA 2 ========== */
+.main-content {
+    width: 100%;
+    max-width: 960px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.split-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 10px 0;
+}
+
+.text-side { flex: 1.3; }
+.image-side { flex: 0.9; display: flex; justify-content: center; }
+
+/* ---- CARTA ---- */
+.carta {
+    background: linear-gradient(160deg, #fffaf8 0%, #fff5f7 100%);
+    border: 1.5px solid rgba(214,51,132,0.18);
+    border-radius: 18px;
+    padding: 28px 32px;
+    box-shadow:
+        0 4px 30px rgba(214,51,132,0.12),
+        0 1px 4px rgba(0,0,0,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.carta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rosa-medio), var(--rosa-fuerte), var(--morado), var(--rosa-fuerte), var(--rosa-medio));
+    border-radius: 18px 18px 0 0;
+}
+
+.carta-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.carta-titulo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--rosa-fuerte);
+    font-size: 1.05rem;
+    flex: 1;
+    text-align: center;
+}
+
+#maquina-escribir {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.35rem;
+    line-height: 1.75;
+    color: var(--texto-oscuro);
+    min-height: 60px;
+}
+
+/* ---- CONTADOR ---- */
+.contador-linea {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(214,51,132,0.3), transparent);
+    margin: 18px 0 14px;
+}
+
+.contador-titulo {
+    font-size: 0.88rem;
+    color: #a06080;
+    font-style: italic;
+    margin: 0;
+}
+
+#reloj {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--rosa-oscuro);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+}
+
+/* ========== IMAGEN / FOTO ========== */
+.image-box {
+    opacity: 0;
+    transition: transform 1.8s ease, opacity 1.8s ease;
+}
+
 .box-visible { opacity: 1 !important; transform: scale(1) !important; }
-#box-arbol { width: 350px; transform: scale(0.8); }
-#box-final { width: 400px; transform: scale(0.9); }
-.image-box img { width: 100%; }
 
-.spotify-player {
-    position: absolute; bottom: 20px; width: 90%; max-width: 400px;
-    background: var(--spotify-black); padding: 12px; border-radius: 8px; color: white;
+#box-arbol { transform: scale(0.85) translateY(20px); }
+#box-final { transform: scale(0.9); }
+
+.image-box img { width: 100%; display: block; }
+
+/* Marco decorativo para la foto */
+.foto-frame {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow:
+        0 12px 40px rgba(214,51,132,0.22),
+        0 2px 8px rgba(0,0,0,0.1),
+        0 0 0 4px white,
+        0 0 0 6px rgba(214,51,132,0.2);
+    max-width: 300px;
+    background: white;
+    padding-bottom: 12px;
 }
-.player-top { display: flex; align-items: center; gap: 12px; }
-.album-cover { width: 45px; height: 45px; border-radius: 4px; }
-.song-info { flex: 1; }
-.song-title { font-size: 0.85rem; font-weight: bold; }
-.artist { font-size: 0.7rem; color: #b3b3b3; }
-#masterPlay { font-size: 1.4rem; cursor: pointer; }
-.progress-container { width: 100%; height: 3px; background: #404040; margin-top: 10px; }
-.progress-bar { width: 0%; height: 100%; background: var(--spotify-green); }
 
-.static-flower { width: 160px; cursor: pointer; animation: pulse 2s infinite; }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+.foto-deco {
+    text-align: center;
+    font-size: 1.3rem;
+    padding: 10px 0 6px;
+    background: linear-gradient(135deg, var(--rosa-suave), #f3e5f5);
+}
 
-#maquina-escribir { font-family: 'Dancing Script', cursive; font-size: 1.5rem; line-height: 1.5; color: #222; }
-.hidden_el { opacity: 0; transition: 1.5s; pointer-events: none; }
+.foto-caption {
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem;
+    color: var(--rosa-fuerte);
+    padding: 8px 0 2px;
+}
+
+.foto-final {
+    max-width: 360px;
+}
+
+/* ========== BOTÓN SIGUIENTE ========== */
+.btn-siguiente {
+    display: inline-block;
+    margin-top: 18px;
+    background: linear-gradient(135deg, var(--rosa-fuerte), var(--rosa-oscuro));
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 50px;
+    cursor: none;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    box-shadow: 0 6px 20px rgba(214,51,132,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-siguiente:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 10px 28px rgba(214,51,132,0.45);
+}
+
+/* ========== HIDDEN / VISIBLE ========== */
+.hidden_el  { opacity: 0; transition: opacity 1.5s ease; pointer-events: none; }
 .visible_el { opacity: 1 !important; pointer-events: all !important; }
 
-#texto-final { font-family: 'Dancing Script', cursive; color: var(--text-pink); font-size: 2.5rem; }
-button { background: var(--text-pink); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
+/* ========== SPOTIFY PLAYER ========== */
+.spotify-player {
+    position: absolute;
+    bottom: 20px;
+    width: 90%;
+    max-width: 380px;
+    background: rgba(18,18,18,0.97);
+    padding: 14px 16px;
+    border-radius: 14px;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
 
-.split-container { display: flex; align-items: center; gap: 20px; max-width: 900px; padding: 20px; }
-.text-side { flex: 1.2; text-align: left; }
-.image-side { flex: 0.8; }
+.player-top { display: flex; align-items: center; gap: 14px; }
+
+.album-cover {
+    width: 48px; height: 48px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.song-info { flex: 1; }
+.song-title { font-size: 0.9rem; font-weight: 700; }
+.artist { font-size: 0.72rem; color: #b3b3b3; margin-top: 2px; }
+
+#masterPlay {
+    font-size: 1.5rem;
+    cursor: none;
+    color: var(--spotify-green);
+    transition: transform 0.2s;
+}
+#masterPlay:hover { transform: scale(1.2); }
+
+.progress-container {
+    width: 100%; height: 3px;
+    background: #404040;
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--spotify-green), #1ed760);
+    border-radius: 2px;
+    transition: width 0.5s linear;
+}
+
+/* ========== PANTALLA FINAL ========== */
+.final-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px;
+}
+
+#texto-final {
+    font-family: 'Playfair Display', serif;
+    color: var(--rosa-fuerte);
+    font-size: 2.6rem;
+    text-shadow: 0 2px 16px rgba(214,51,132,0.25);
+    transition: opacity 1.5s ease;
+}
+
+#subtexto-final {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: var(--rosa-oscuro);
+    transition: opacity 1.5s ease;
+}
+
+.corazones-row {
+    display: flex;
+    gap: 12px;
+    font-size: 1.8rem;
+    transition: opacity 1.5s ease;
+}
+
+.corazones-row span {
+    animation: flotar 2.5s ease-in-out infinite;
+}
+.corazones-row span:nth-child(2) { animation-delay: 0.3s; }
+.corazones-row span:nth-child(3) { animation-delay: 0.6s; }
+.corazones-row span:nth-child(4) { animation-delay: 0.9s; }
+.corazones-row span:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+}
+
+/* ========== CONFETI ========== */
+.confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -30px;
+    font-size: 18px;
+    animation: caerConfeti linear forwards;
+}
+
+@keyframes caerConfeti {
+    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 700px) {
+    .split-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .text-side, .image-side {
+        flex: unset;
+        width: 100%;
+    }
+
+    .foto-frame { max-width: 260px; }
+
+    #maquina-escribir { font-size: 1.15rem; }
+    #texto-final { font-size: 1.8rem; }
+
+    .carta { padding: 20px 18px; }
+
+    .main-content { padding: 10px; }
+
+    .static-flower { width: 150px; }
+}

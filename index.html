@@ -5,39 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para la mejor Mamá</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
+    <!-- Cursor personalizado -->
+    <div class="cursor-heart">❤️</div>
+
+    <!-- Pétalos de fondo (pantalla 1) -->
+    <div class="petals-container" id="petals-container"></div>
+
+    <!-- Confeti (pantalla 3) -->
+    <div class="confetti-container" id="confetti-container"></div>
+
     <audio id="miCancion" src="musica.mp3"></audio>
 
+    <!-- PANTALLA 1: Bienvenida -->
     <section id="pantalla1" class="screen active">
-        <div class="content">
+        <div class="screen-overlay"></div>
+        <div class="content p1-content">
+            <p class="saludo-top">✨ Un mensaje especial para ti ✨</p>
             <img src="flor.png" alt="Flor" id="btn-empezar" class="static-flower">
             <p class="instruccion">Toca la flor, mamá</p>
         </div>
     </section>
 
+    <!-- PANTALLA 2: Mensaje + contador -->
     <section id="pantalla2" class="screen">
+        <div class="screen-overlay"></div>
         <div class="main-content">
             <div class="split-container">
+
+                <!-- Carta con el mensaje -->
                 <div class="text-side">
-                    <p id="maquina-escribir"></p>
-                    <div id="contador-container" class="hidden_el">
-                        <p class="contador-titulo">Mi vida junto a ti comenzó hace...</p>
-                        <div id="reloj">Cargando...</div>
+                    <div class="carta">
+                        <div class="carta-header">
+                            <span class="carta-rosa">🌹</span>
+                            <span class="carta-titulo">Con todo mi amor</span>
+                            <span class="carta-rosa">🌹</span>
+                        </div>
+                        <p id="maquina-escribir"></p>
+                        <div id="contador-container" class="hidden_el">
+                            <div class="contador-linea"></div>
+                            <p class="contador-titulo">Mi vida junto a ti comenzó hace...</p>
+                            <div id="reloj">Cargando...</div>
+                        </div>
                     </div>
+                    <button id="btn-a-final" class="hidden_el btn-siguiente">Siguiente ❤️</button>
                 </div>
+
+                <!-- Foto -->
                 <div class="image-side">
-                    <div class="image-box hidden_el" id="box-arbol">
-                        <img src="arbol.png" alt="Árbol">
+                    <div class="image-box hidden_el foto-frame" id="box-arbol">
+                        <div class="foto-deco">📸</div>
+                        <img src="arbol.png" alt="Nosotros">
+                        <p class="foto-caption">Tú y yo 💕</p>
                     </div>
                 </div>
+
             </div>
-            <button id="btn-a-final" class="hidden_el">Siguiente ❤️</button>
         </div>
 
+        <!-- Player estilo Spotify -->
         <div class="spotify-player">
             <div class="player-top">
                 <img src="portada.jpg" class="album-cover">
@@ -55,12 +85,18 @@
         </div>
     </section>
 
+    <!-- PANTALLA 3: Final -->
     <section id="pantalla3" class="screen">
+        <div class="screen-overlay final-overlay"></div>
         <div class="final-container">
-            <div class="image-box hidden_el" id="box-final">
+            <div class="image-box hidden_el foto-frame foto-final" id="box-final">
                 <img src="final.png" alt="Final">
             </div>
             <h1 id="texto-final" class="hidden_el">La Mejor Mamá del Mundo</h1>
+            <p id="subtexto-final" class="hidden_el">Te amo con todo mi corazón 💖</p>
+            <div id="corazones-final" class="hidden_el corazones-row">
+                <span>🌹</span><span>💕</span><span>🌸</span><span>💖</span><span>🌺</span>
+            </div>
         </div>
     </section>
 
