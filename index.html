@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para la mejor Mamá</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <audio id="miCancion" src="musica.mp3"></audio>
+
+    <section id="pantalla1" class="screen active">
+        <div class="content">
+            <img src="flor.png" alt="Flor" id="btn-empezar" class="static-flower">
+            <p class="instruccion">Toca la flor, mamá</p>
+        </div>
+    </section>
+
+    <section id="pantalla2" class="screen">
+        <div class="main-content">
+            <div class="split-container">
+                <div class="text-side">
+                    <p id="maquina-escribir"></p>
+                    <div id="contador-container" class="hidden_el">
+                        <p class="contador-titulo">Mi vida junto a ti comenzó hace...</p>
+                        <div id="reloj">Cargando...</div>
+                    </div>
+                </div>
+                <div class="image-side">
+                    <div class="image-box hidden_el" id="box-arbol">
+                        <img src="arbol.png" alt="Árbol">
+                    </div>
+                </div>
+            </div>
+            <button id="btn-a-final" class="hidden_el">Siguiente ❤️</button>
+        </div>
+
+        <div class="spotify-player">
+            <div class="player-top">
+                <img src="portada.jpg" class="album-cover">
+                <div class="song-info">
+                    <div class="song-title">Mi Primer Amor</div>
+                    <div class="artist">Pesado</div>
+                </div>
+                <div class="player-controls">
+                    <i class="fas fa-play" id="masterPlay"></i>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pantalla3" class="screen">
+        <div class="final-container">
+            <div class="image-box hidden_el" id="box-final">
+                <img src="final.png" alt="Final">
+            </div>
+            <h1 id="texto-final" class="hidden_el">La Mejor Mamá del Mundo</h1>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

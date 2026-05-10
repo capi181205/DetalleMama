@@ -1,0 +1,57 @@
+:root {
+    --bg-color: #fdfafb;
+    --spotify-black: #121212;
+    --spotify-green: #1DB954;
+    --text-pink: #d63384;
+}
+
+body {
+    margin: 0; background-color: var(--bg-color);
+    font-family: 'Quicksand', sans-serif;
+    height: 100vh; overflow: hidden;
+}
+
+.screen {
+    position: absolute; width: 100%; height: 100%;
+    display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+}
+
+.active { display: flex; }
+
+#contador-container { margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; }
+.contador-titulo { font-size: 1rem; color: #777; margin: 0; }
+#reloj { font-size: 1.2rem; font-weight: bold; color: #333; margin-top: 5px; }
+
+.image-box { opacity: 0; transition: transform 2s ease, opacity 2s ease; }
+.box-visible { opacity: 1 !important; transform: scale(1) !important; }
+#box-arbol { width: 350px; transform: scale(0.8); }
+#box-final { width: 400px; transform: scale(0.9); }
+.image-box img { width: 100%; }
+
+.spotify-player {
+    position: absolute; bottom: 20px; width: 90%; max-width: 400px;
+    background: var(--spotify-black); padding: 12px; border-radius: 8px; color: white;
+}
+.player-top { display: flex; align-items: center; gap: 12px; }
+.album-cover { width: 45px; height: 45px; border-radius: 4px; }
+.song-info { flex: 1; }
+.song-title { font-size: 0.85rem; font-weight: bold; }
+.artist { font-size: 0.7rem; color: #b3b3b3; }
+#masterPlay { font-size: 1.4rem; cursor: pointer; }
+.progress-container { width: 100%; height: 3px; background: #404040; margin-top: 10px; }
+.progress-bar { width: 0%; height: 100%; background: var(--spotify-green); }
+
+.static-flower { width: 160px; cursor: pointer; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+#maquina-escribir { font-family: 'Dancing Script', cursive; font-size: 1.5rem; line-height: 1.5; color: #222; }
+.hidden_el { opacity: 0; transition: 1.5s; pointer-events: none; }
+.visible_el { opacity: 1 !important; pointer-events: all !important; }
+
+#texto-final { font-family: 'Dancing Script', cursive; color: var(--text-pink); font-size: 2.5rem; }
+button { background: var(--text-pink); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
+
+.split-container { display: flex; align-items: center; gap: 20px; max-width: 900px; padding: 20px; }
+.text-side { flex: 1.2; text-align: left; }
+.image-side { flex: 0.8; }
