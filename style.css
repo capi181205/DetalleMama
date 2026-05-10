@@ -438,26 +438,109 @@ body {
     100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
 }
 
-/* ========== RESPONSIVE ========== */
+/* ========== RESPONSIVE MÓVIL ========== */
 @media (max-width: 700px) {
+
+    /* Pantalla 2: permitir scroll interno para que todo quepa */
+    #pantalla2 {
+        justify-content: flex-start;
+        overflow-y: auto;
+        padding-bottom: 130px; /* espacio para el player fijo abajo */
+    }
+
+    .main-content {
+        padding: 14px 12px 0;
+        width: 100%;
+    }
+
+    /* En móvil: carta arriba, foto abajo, más compacto */
     .split-container {
         flex-direction: column;
         align-items: center;
+        gap: 14px;
+        padding: 0;
     }
 
-    .text-side, .image-side {
+    .text-side {
         flex: unset;
         width: 100%;
     }
 
-    .foto-frame { max-width: 260px; }
+    .image-side {
+        flex: unset;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
 
-    #maquina-escribir { font-size: 1.15rem; }
+    /* Carta más compacta */
+    .carta {
+        padding: 16px 16px;
+    }
+
+    .carta-header {
+        margin-bottom: 10px;
+    }
+
+    #maquina-escribir {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    /* Foto pequeña y horizontal para no ocupar toda la pantalla */
+    #box-arbol {
+        max-width: 200px;
+    }
+
+    .foto-frame {
+        max-width: 200px;
+    }
+
+    .foto-deco {
+        font-size: 1rem;
+        padding: 6px 0 4px;
+    }
+
+    .foto-caption {
+        font-size: 0.95rem;
+        padding: 5px 0 2px;
+    }
+
+    /* Botón siguiente centrado */
+    .btn-siguiente {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 12px;
+    }
+
+    /* Contador más compacto */
+    .contador-linea { margin: 12px 0 10px; }
+    .contador-titulo { font-size: 0.82rem; }
+    #reloj { font-size: 1rem; }
+
+    /* Player fijo abajo en móvil */
+    .spotify-player {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 14px 14px 0 0;
+        padding: 12px 16px;
+    }
+
+    /* Pantalla final */
     #texto-final { font-size: 1.8rem; }
+    #subtexto-final { font-size: 1.2rem; }
+    .foto-final { max-width: 260px; }
 
-    .carta { padding: 20px 18px; }
-
-    .main-content { padding: 10px; }
-
+    /* Pantalla 1 */
     .static-flower { width: 150px; }
+    .instruccion { font-size: 1.3rem; }
+    .saludo-top { font-size: 0.95rem; text-align: center; padding: 0 20px; }
+
+    /* Ocultar cursor personalizado en táctil */
+    .cursor-heart { display: none; }
+    body { cursor: auto; }
 }
