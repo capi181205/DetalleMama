@@ -15,12 +15,27 @@
 /* ========== RESET Y BASE ========== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html {
+    height: 100%;
+    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #fce4ec 100%);
+}
+
 body {
     font-family: 'Lato', sans-serif;
-    height: 100vh;
-    overflow: hidden;
-    cursor: none; /* ocultamos el cursor normal */
+    min-height: 100%;
+    cursor: none;
     background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #fce4ec 100%);
+    /* Por defecto sin scroll (pantallas 1 y 3) */
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Clase que se agrega por JS al entrar en pantalla 2 */
+body.pantalla2-activa {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: auto;
+    min-height: 100vh;
 }
 
 /* ========== CURSOR PERSONALIZADO ========== */
@@ -35,16 +50,19 @@ body {
     filter: drop-shadow(0 0 4px rgba(214,51,132,0.5));
 }
 
-/* ========== PANTALLAS ========== */
+/* ========== PANTALLAS 1 y 3 (fixed, cubren toda la ventana) ========== */
 .screen {
-    position: absolute;
-    width: 100%; height: 100%;
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
     transition: opacity 0.8s ease;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    z-index: 1;
 }
 
 .screen.active {
@@ -52,18 +70,22 @@ body {
     opacity: 1;
 }
 
-.screen.fade-in {
-    animation: fadeInScreen 0.8s ease forwards;
+/* ========== PANTALLA 2 (flujo normal para poder hacer scroll) ========== */
+#pantalla2 {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    top: auto; left: auto;
+    justify-content: flex-start;
+    padding-top: 20px;
+    padding-bottom: 140px;
+    z-index: 1;
 }
 
-@keyframes fadeInScreen {
-    from { opacity: 0; transform: scale(0.98); }
-    to   { opacity: 1; transform: scale(1); }
-}
-
-/* Overlay decorativo de fondo en cada pantalla */
+/* Overlay decorativo */
 .screen-overlay {
-    position: absolute;
+    position: fixed;
     inset: 0;
     background:
         radial-gradient(ellipse at 20% 20%, rgba(252,228,236,0.8) 0%, transparent 60%),
@@ -95,6 +117,8 @@ body {
     font-size: 1.1rem;
     letter-spacing: 1px;
     animation: fadeDown 1s ease;
+    text-align: center;
+    padding: 0 20px;
 }
 
 @keyframes fadeDown {
@@ -110,9 +134,7 @@ body {
     transition: transform 0.2s;
 }
 
-.static-flower:hover {
-    transform: scale(1.12) rotate(5deg);
-}
+.static-flower:hover { transform: scale(1.12) rotate(5deg); }
 
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
@@ -155,13 +177,14 @@ body {
     100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
 }
 
-/* ========== PANTALLA 2 ========== */
+/* ========== PANTALLA 2 — contenido ========== */
 .main-content {
     width: 100%;
     max-width: 960px;
     padding: 20px;
     position: relative;
     z-index: 1;
+    margin: 0 auto;
 }
 
 .split-container {
@@ -257,7 +280,6 @@ body {
 
 .image-box img { width: 100%; display: block; }
 
-/* Marco decorativo para la foto */
 .foto-frame {
     border-radius: 16px;
     overflow: hidden;
@@ -286,9 +308,7 @@ body {
     padding: 8px 0 2px;
 }
 
-.foto-final {
-    max-width: 360px;
-}
+.foto-final { max-width: 360px; }
 
 /* ========== BOTÓN SIGUIENTE ========== */
 .btn-siguiente {
@@ -317,10 +337,12 @@ body {
 .hidden_el  { opacity: 0; transition: opacity 1.5s ease; pointer-events: none; }
 .visible_el { opacity: 1 !important; pointer-events: all !important; }
 
-/* ========== SPOTIFY PLAYER ========== */
+/* ========== SPOTIFY PLAYER (siempre fixed abajo) ========== */
 .spotify-player {
-    position: absolute;
-    bottom: 20px;
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 90%;
     max-width: 380px;
     background: rgba(18,18,18,0.97);
@@ -329,7 +351,7 @@ body {
     color: white;
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     backdrop-filter: blur(10px);
-    z-index: 10;
+    z-index: 200;
 }
 
 .player-top { display: flex; align-items: center; gap: 14px; }
@@ -402,9 +424,7 @@ body {
     transition: opacity 1.5s ease;
 }
 
-.corazones-row span {
-    animation: flotar 2.5s ease-in-out infinite;
-}
+.corazones-row span { animation: flotar 2.5s ease-in-out infinite; }
 .corazones-row span:nth-child(2) { animation-delay: 0.3s; }
 .corazones-row span:nth-child(3) { animation-delay: 0.6s; }
 .corazones-row span:nth-child(4) { animation-delay: 0.9s; }
@@ -441,106 +461,63 @@ body {
 /* ========== RESPONSIVE MÓVIL ========== */
 @media (max-width: 700px) {
 
-    /* Pantalla 2: permitir scroll interno para que todo quepa */
-    #pantalla2 {
-        justify-content: flex-start;
-        overflow-y: auto;
-        padding-bottom: 130px; /* espacio para el player fijo abajo */
-    }
-
-    .main-content {
-        padding: 14px 12px 0;
-        width: 100%;
-    }
-
-    /* En móvil: carta arriba, foto abajo, más compacto */
     .split-container {
         flex-direction: column;
         align-items: center;
-        gap: 14px;
+        gap: 20px;
         padding: 0;
     }
 
-    .text-side {
-        flex: unset;
-        width: 100%;
-    }
+    .text-side  { flex: unset; width: 100%; }
+    .image-side { flex: unset; width: 100%; justify-content: center; }
 
-    .image-side {
-        flex: unset;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
+    .main-content { padding: 14px 14px 0; }
 
-    /* Carta más compacta */
-    .carta {
-        padding: 16px 16px;
-    }
+    .carta { padding: 18px 16px; }
+    .carta-header { margin-bottom: 10px; }
 
-    .carta-header {
-        margin-bottom: 10px;
-    }
+    #maquina-escribir { font-size: 1.15rem; line-height: 1.6; }
 
-    #maquina-escribir {
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
+    #box-arbol  { max-width: 250px; width: 250px; }
+    .foto-frame { max-width: 250px; width: 250px; }
 
-    /* Foto pequeña y horizontal para no ocupar toda la pantalla */
-    #box-arbol {
-        max-width: 200px;
-    }
+    .foto-deco    { font-size: 1rem; padding: 6px 0 4px; }
+    .foto-caption { font-size: 0.95rem; }
 
-    .foto-frame {
-        max-width: 200px;
-    }
+    .contador-linea  { margin: 12px 0 10px; }
+    .contador-titulo { font-size: 0.82rem; }
+    #reloj           { font-size: 1rem; }
 
-    .foto-deco {
-        font-size: 1rem;
-        padding: 6px 0 4px;
-    }
-
-    .foto-caption {
-        font-size: 0.95rem;
-        padding: 5px 0 2px;
-    }
-
-    /* Botón siguiente centrado */
     .btn-siguiente {
         display: block;
         width: 100%;
         text-align: center;
-        margin-top: 12px;
+        margin-top: 14px;
+        cursor: pointer;
     }
 
-    /* Contador más compacto */
-    .contador-linea { margin: 12px 0 10px; }
-    .contador-titulo { font-size: 0.82rem; }
-    #reloj { font-size: 1rem; }
-
-    /* Player fijo abajo en móvil */
+    /* Player: esquinas redondeadas solo arriba en móvil */
     .spotify-player {
-        position: fixed;
         bottom: 0;
         left: 0;
+        right: 0;
         width: 100%;
         max-width: 100%;
+        transform: none;
         border-radius: 14px 14px 0 0;
-        padding: 12px 16px;
+        padding: 12px 16px 20px;
     }
 
     /* Pantalla final */
-    #texto-final { font-size: 1.8rem; }
+    #texto-final    { font-size: 1.9rem; }
     #subtexto-final { font-size: 1.2rem; }
-    .foto-final { max-width: 260px; }
+    .foto-final     { max-width: 260px; }
 
     /* Pantalla 1 */
     .static-flower { width: 150px; }
-    .instruccion { font-size: 1.3rem; }
-    .saludo-top { font-size: 0.95rem; text-align: center; padding: 0 20px; }
+    .instruccion   { font-size: 1.3rem; }
 
-    /* Ocultar cursor personalizado en táctil */
+    /* Sin cursor en táctil */
     .cursor-heart { display: none; }
     body { cursor: auto; }
 }

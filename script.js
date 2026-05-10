@@ -5,18 +5,18 @@ const textoMama = `Para la mujer más increíble de mi vida:\n\nGracias por tu a
 
 // ============================================================
 //  FECHA DE NACIMIENTO (cambia por la tuya real)
-//  Formato: new Date(AÑO, MES-1, DIA)   ← mes va de 0 a 11
+//  Formato: new Date(AÑO, MES-1, DIA)   <- mes va de 0 a 11
 // ============================================================
 const nacimiento = new Date(2005, 11, 18, 0, 0, 0); // 18 diciembre 2005
 
 // ============================================================
 //  REFERENCIAS AL DOM
 // ============================================================
-const audio    = document.getElementById('miCancion');
-const btnPlay  = document.getElementById('masterPlay');
-const barra    = document.getElementById('progressBar');
-const cursor   = document.querySelector('.cursor-heart');
-const petalsC  = document.getElementById('petals-container');
+const audio     = document.getElementById('miCancion');
+const btnPlay   = document.getElementById('masterPlay');
+const barra     = document.getElementById('progressBar');
+const cursor    = document.querySelector('.cursor-heart');
+const petalsC   = document.getElementById('petals-container');
 const confettiC = document.getElementById('confetti-container');
 
 // ============================================================
@@ -28,7 +28,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // ============================================================
-//  PÉTALOS CAYENDO (pantalla 1)
+//  PÉTALOS CAYENDO
 // ============================================================
 const emojisPetalo = ['🌸', '🌺', '🌹', '💮', '🏵️'];
 
@@ -36,19 +36,17 @@ function crearPetalo() {
     const p = document.createElement('div');
     p.classList.add('petal');
     p.textContent = emojisPetalo[Math.floor(Math.random() * emojisPetalo.length)];
-    p.style.left     = Math.random() * 100 + 'vw';
-    p.style.fontSize = (16 + Math.random() * 14) + 'px';
-    const dur = 5 + Math.random() * 6; // entre 5 y 11 seg
-    p.style.animationDuration  = dur + 's';
-    p.style.animationDelay     = Math.random() * 4 + 's';
-    p.style.opacity = 0.6 + Math.random() * 0.4;
+    p.style.left             = Math.random() * 100 + 'vw';
+    p.style.fontSize         = (16 + Math.random() * 14) + 'px';
+    const dur                = 5 + Math.random() * 6;
+    p.style.animationDuration = dur + 's';
+    p.style.animationDelay   = Math.random() * 4 + 's';
+    p.style.opacity          = 0.6 + Math.random() * 0.4;
     petalsC.appendChild(p);
     setTimeout(() => p.remove(), (dur + 4) * 1000);
 }
 
-// Genera pétalos cada 600ms
 const intervaloPetalo = setInterval(crearPetalo, 600);
-// Arranca con un lote inicial
 for (let i = 0; i < 12; i++) crearPetalo();
 
 // ============================================================
@@ -74,13 +72,13 @@ audio.addEventListener('timeupdate', () => {
 //  RELOJ / CONTADOR DE TIEMPO
 // ============================================================
 function actualizarReloj() {
-    const ahora  = new Date();
-    const dif    = ahora - nacimiento;
-    const anios  = Math.floor(dif / (1000 * 60 * 60 * 24 * 365.25));
-    const seg    = Math.floor(dif / 1000);
-    const horas  = Math.floor((seg % (3600 * 24)) / 3600);
-    const mins   = Math.floor((seg % 3600) / 60);
-    const segs   = seg % 60;
+    const ahora = new Date();
+    const dif   = ahora - nacimiento;
+    const anios = Math.floor(dif / (1000 * 60 * 60 * 24 * 365.25));
+    const seg   = Math.floor(dif / 1000);
+    const horas = Math.floor((seg % (3600 * 24)) / 3600);
+    const mins  = Math.floor((seg % 3600) / 60);
+    const segs  = seg % 60;
     document.getElementById('reloj').innerText =
         `${anios} años, ${horas}h ${mins}m ${segs}s`;
 }
@@ -98,25 +96,40 @@ function escribir(texto, i, elemento, callback) {
 }
 
 // ============================================================
-//  TRANSICIÓN ENTRE PANTALLAS (con fade)
+//  TRANSICIÓN ENTRE PANTALLAS CON FADE
+//  + manejo de scroll del body según pantalla activa
 // ============================================================
 function cambiarPantalla(mostrar, ocultar) {
     return new Promise(resolve => {
-        // Fade out
-        ocultar.style.opacity = '0';
+        ocultar.style.opacity    = '0';
         ocultar.style.transition = 'opacity 0.6s ease';
 
         setTimeout(() => {
             ocultar.style.display = 'none';
             ocultar.classList.remove('active');
 
-            // Mostrar nueva con fade in
+            // Si salimos de pantalla2, quitamos el scroll del body
+            if (ocultar.id === 'pantalla2') {
+                document.body.classList.remove('pantalla2-activa');
+                document.body.style.overflow = 'hidden';
+                document.body.style.height   = '100vh';
+                window.scrollTo(0, 0);
+            }
+
+            // Si entramos a pantalla2, activamos scroll en el body
+            if (mostrar.id === 'pantalla2') {
+                document.body.classList.add('pantalla2-activa');
+                document.body.style.overflow = 'auto';
+                document.body.style.height   = 'auto';
+            }
+
             mostrar.style.display = 'flex';
             mostrar.style.opacity = '0';
+
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     mostrar.style.transition = 'opacity 0.8s ease';
-                    mostrar.style.opacity = '1';
+                    mostrar.style.opacity    = '1';
                     mostrar.classList.add('active');
                     resolve();
                 });
@@ -136,7 +149,7 @@ function lanzarConfeti() {
             const c = document.createElement('div');
             c.classList.add('confetti-piece');
             c.textContent = emojisConfeti[Math.floor(Math.random() * emojisConfeti.length)];
-            c.style.left = Math.random() * 100 + 'vw';
+            c.style.left  = Math.random() * 100 + 'vw';
             c.style.fontSize = (14 + Math.random() * 16) + 'px';
             const dur = 2.5 + Math.random() * 2.5;
             c.style.animationDuration = dur + 's';
@@ -146,7 +159,6 @@ function lanzarConfeti() {
     }
 }
 
-// Disparo de confeti cada 4 segundos mientras estés en pantalla 3
 let confettiInterval = null;
 
 function iniciarConfeti() {
@@ -155,12 +167,10 @@ function iniciarConfeti() {
 }
 
 // ============================================================
-//  EVENTOS DE BOTONES
+//  BOTÓN PANTALLA 1 -> PANTALLA 2
 // ============================================================
-
-// Pantalla 1 → Pantalla 2
 document.getElementById('btn-empezar').addEventListener('click', async () => {
-    clearInterval(intervaloPetalo); // detenemos pétalos al avanzar
+    clearInterval(intervaloPetalo);
     petalsC.innerHTML = '';
 
     const p1 = document.getElementById('pantalla1');
@@ -168,19 +178,18 @@ document.getElementById('btn-empezar').addEventListener('click', async () => {
 
     await cambiarPantalla(p2, p1);
 
-    // Reproducir música automáticamente
+    // Música automática
     audio.play().catch(() => {});
     btnPlay.classList.replace('fa-play', 'fa-pause');
 
-    // Aparece la foto tras 1 segundo
+    // Foto aparece a 1 segundo
     setTimeout(() => {
         document.getElementById('box-arbol').classList.add('box-visible');
     }, 1000);
 
-    // Empezamos a escribir el mensaje
+    // Máquina de escribir
     const elTexto = document.getElementById('maquina-escribir');
     escribir(textoMama, 0, elTexto, () => {
-        // Al terminar de escribir, mostramos contador y botón
         document.getElementById('contador-container').classList.add('visible_el');
         document.getElementById('btn-a-final').classList.add('visible_el');
         setInterval(actualizarReloj, 1000);
@@ -188,28 +197,26 @@ document.getElementById('btn-empezar').addEventListener('click', async () => {
     });
 });
 
-// Pantalla 2 → Pantalla 3
+// ============================================================
+//  BOTÓN PANTALLA 2 -> PANTALLA 3
+// ============================================================
 document.getElementById('btn-a-final').addEventListener('click', async () => {
     const p2 = document.getElementById('pantalla2');
     const p3 = document.getElementById('pantalla3');
 
     await cambiarPantalla(p3, p2);
 
-    // Mostrar foto final
     setTimeout(() => {
         document.getElementById('box-final').classList.add('box-visible');
 
-        // Mostrar texto principal
         setTimeout(() => {
             document.getElementById('texto-final').classList.add('visible_el');
 
-            // Mostrar subtexto
             setTimeout(() => {
                 document.getElementById('subtexto-final').classList.add('visible_el');
                 document.getElementById('corazones-final').classList.add('visible_el');
                 iniciarConfeti();
             }, 800);
-
         }, 900);
     }, 500);
 });
